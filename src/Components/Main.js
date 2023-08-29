@@ -1,4 +1,5 @@
 import React from "react";
+import Video from "./Video";
 
 function Main(props) {
   //Define props
@@ -10,18 +11,7 @@ function Main(props) {
       {<h1> {apod.title}</h1>}
       {<span> {apod.date}</span>}
       {<p> {apod.explanation}</p>}
-      {apod.media_type === "video" && (
-        //iFrame settings
-        <iframe
-          width="560"
-          heigth="315"
-          src={apod.url}
-          title={apod.title}
-          frameborder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; syroscope; picture-in-picture"
-          allowfullscreen
-        ></iframe>
-      )}
+      {apod.media_type === "video" && <Video apod={apod} />}
 
       {apod.media_type === "image" && <img src={apod.url} alt={apod.title} />}
     </div>
