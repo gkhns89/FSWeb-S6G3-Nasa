@@ -1,9 +1,30 @@
-import React from 'react'
+import React from "react";
 
-const Main = () => {
+function Main(props) {
+  //Define props
+  const { dataProp: apod } = props;
+
   return (
-    <div>Main</div>
-  )
-}
+    <div>
+      {/* Get datas from props */}
+      {<h1> {apod.title}</h1>}
+      {<span> {apod.date}</span>}
+      {<p> {apod.explanation}</p>}
+      {apod.media_type === "video" && (
+        //iFrame settings
+        <iframe
+          width="560"
+          heigth="315"
+          src={apod.url}
+          title={apod.title}
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; syroscope; picture-in-picture"
+          allowfullscreen
+        ></iframe>
+      )}
 
-export default Main
+      {apod.media_type === "image" && <img src={apod.url} alt={apod.title} />}
+    </div>
+  );
+}
+export default Main;
