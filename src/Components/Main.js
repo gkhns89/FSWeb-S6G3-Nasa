@@ -1,20 +1,26 @@
 import React from "react";
 import Video from "./Video";
+import Images from "./Images";
 
-function Main(props) {
+const Main = (props) => {
   //Define props
   const { dataProp: apod } = props;
 
   return (
     <div>
-      {/* Get datas from props */}
-      {<h1> {apod.title}</h1>}
-      {<span> {apod.date}</span>}
-      {<p> {apod.explanation}</p>}
-      {apod.media_type === "video" && <Video apod={apod} />}
+      {apod.map((data, index) => {
+        return (
+          <div key={index}>
+            <h1>{data.title}</h1>
+            <h2> {data.date}</h2>
+            <p> {data.explanation} </p>
 
-      {apod.media_type === "image" && <img src={apod.url} alt={apod.title} />}
+            {data.media_type === "video" && <Video apod={data} />}
+            {data.media_type === "image" && <Images apod={data} />}
+          </div>
+        );
+      })}
     </div>
   );
-}
+};
 export default Main;

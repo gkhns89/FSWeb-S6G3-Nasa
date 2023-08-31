@@ -4,51 +4,73 @@ import axios from "axios";
 import DatePicker from "./DatePicker";
 import Main from "./Main";
 
-const Header = (props) => {
-  //Define props
-  const { date, setDate } = props;
+const Header = () => {
   //Define states for post and errors
   const [apod, setApod] = useState({});
-  const [error, setError] = useState(null);
+  const [error, setError] = useState();
 
+  let actualDate = new Date();
+  let dArr = [];
+  function firstDate() {
+    for (let i = 0; i < 3; i++) {
+      dArr.push(new Date(actualDate).toISOString().slice(0, 10));
+      actualDate.setDate(actualDate.getDate() - 1);
+    }
+    return dArr;
+  }
+  dArr = firstDate();
+
+  const [dat, setDat] = useState(dArr);
   //Axios for post request
   useEffect(() => {
-    axios
-      .get("https://api.nasa.gov/planetary/apod", {
-        params: {
-          api_key: "CaxSuXdVT3QdQ2dD9TYfN14Ne1Og3TgUH1MHVJbe",
-          date: date,
-        },
-      })
-      .then(function (response) {
-        console.log(response);
-        setApod(response.data);
-        setError(null);
-      })
-      .catch(function (error) {
-        console.log(error);
-        setError(error.message);
-      })
-      .finally(function () {});
+    console.log("koda girdi");
+    let p = [];
+    for (let x = 0; x < dat.length; x++) {
+      axios
+        .get("https://api.nasa.gov/planetary/apod", {
+          params: {
+            api_key: "IBkuaVVK2PfjydQStePjz9NI5C2q1qCr3aqWzYKX",
+            date: dat[x],
+          },
+        })
+        .then(function (response) {
+          console.log(response.data);
+          p.push(response.data);
+          console.log("ARRAY", p);
+          setError(null);
+        })
+        .catch(function (error) {
+          console.log(error.message);
+          setError(error.message);
+        })
+        .finally(function () {});
+    }
+    setApod(p);
+    console.log("YENİ APOD", apod);
     //Effects on date change
-  }, [date]);
+  }, [dat]);
 
   return (
     <div>
-      <div className="discover">
-        <div className="title">
+      <div>
+        <div>
           <h3>CHOOSE YOUR ASTRONOMY PICTURE | VIDEO OF THE DAY</h3>
           <p>discover the cosmos everday</p>
         </div>
       </div>
-      <p>
+      <div>
         <span role="img" aria-label="go!">
-          <DatePicker date={date} setDate={setDate} />
-          {Object.keys(apod).length === 0 && !error && <p> ...Yükleniyor!!!</p>}
-          {Object.keys(apod).length > 0 && !error && <Main dataProp={apod} />}
+          {console.log("DATEPICKER ÖNCESİ", dat[0])}
+
+          {Object.keys(apod) && Object.keys(apod).length === 0 ? (
+            <p>...Yükleniyor!!!</p>
+          ) : (
+            <Main dataProp={apod} />
+          )}
+
           {error && <p> Network Error : {error}</p>}
         </span>
-      </p>
+      </div>
     </div>
   );
 };

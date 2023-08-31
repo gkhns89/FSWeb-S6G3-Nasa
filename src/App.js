@@ -1,17 +1,20 @@
 import React, { useState } from "react";
 import Header from "./Components/Header";
+import Background from "./bg.png";
 import "./App.css";
 
 function App() {
-  //Gettin actual date from system
-  const actualDate = new Date().toISOString().slice(0, 10);
-  //Set actual date to state
-  const [date, setDate] = useState(actualDate);
-
   return (
-    <div className="App">
-      {/* Send props to Header */}
-      <Header date={date} setDate={setDate} />
+    <div
+      className="text-center h-screen w-screen bg-no-repeat bg-cover py-[5%] px-[10%]"
+      style={{
+        backgroundImage: `url(${Background})`,
+      }}
+    >
+      <div className=" bg-[#1a1c21] rounded-3xl border-none ">
+        {console.log("Header oluşuyor")}
+        <Header />
+      </div>
     </div>
   );
 }
